@@ -23,7 +23,7 @@ jobs:
           include-prerelease: true
         
       - name: test
-        run: echo  '$(System.DefaultWorkingDirectory)' | dir
+        run: dir
           
       - name: restore packages
         run: dotnet restore

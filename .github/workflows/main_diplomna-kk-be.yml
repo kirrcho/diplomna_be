@@ -8,6 +8,11 @@ on:
     branches:
       - main
   workflow_dispatch:
+  
+defaults:
+  run:
+    shell: bash
+    working-directory: Diplomna
 
 jobs:
   build:
@@ -21,6 +26,9 @@ jobs:
         with:
           dotnet-version: '6.0.x'
           include-prerelease: true
+          
+      - name: restore packages
+        run: dotnet restore
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
@@ -53,5 +61,5 @@ jobs:
         with:
           app-name: 'diplomna-KK-BE'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0DFD8140B2914A6DB7F704AED939A76C }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_787746F890D8435ABF0BECDDDA091B9E }}
           package: .

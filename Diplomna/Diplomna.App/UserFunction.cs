@@ -13,7 +13,7 @@ namespace Diplomna.App
         }
 
         [FunctionName("Login")]
-        public void Run([ServiceBusTrigger("", "", Connection = "")]string mySbMsg)
+        public void Run([ServiceBusTrigger("%Queues:Login%")] string mySbMsg)
         {
             _logger.LogInformation($"C# ServiceBus topic trigger function processed message: {mySbMsg}");
         }

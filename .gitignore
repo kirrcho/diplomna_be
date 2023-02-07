@@ -5,6 +5,8 @@
 
 local.settings.json
 
+Migrations/
+
 # User-specific files
 *.rsuser
 *.suo

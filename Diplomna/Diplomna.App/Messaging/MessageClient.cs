@@ -8,9 +8,11 @@ namespace Diplomna.App.Messaging
     {
         private ServiceBusClient _client;
 
-        public MessageClient(ServiceBusClient client)
+        public MessageClient(AzureBusSettings settings)
         {
-            _client = client;
+            _client = new ServiceBusClient(settings.ConnectionString);
+
+
         }
 
         public async Task SendMesssageAsync(string message, string queue)

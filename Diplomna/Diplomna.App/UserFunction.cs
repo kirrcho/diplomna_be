@@ -41,9 +41,8 @@ namespace Diplomna.App
             var result = await _userService.LoginAsync(request);
             if (!result.IsSuccessful)
             {
-                var error = string.Join("", validationResult.Errors);
-                _logger.LogError(error);
-                return Result<string>.BadResult(error);
+                _logger.LogError(result.Error);
+                return Result<string>.BadResult(result.Error);
             }
 
             _logger.LogInformation($"{nameof(LoginAsync)} completed.");
@@ -68,9 +67,8 @@ namespace Diplomna.App
             var result = await _userService.RegisterAsync(request);
             if (!result.IsSuccessful)
             {
-                var error = string.Join("", validationResult.Errors);
-                _logger.LogError(error);
-                return Result<bool>.BadResult(error);
+                _logger.LogError(result.Error);
+                return Result<bool>.BadResult(result.Error);
             }
 
             _logger.LogInformation($"{nameof(RegisterAsync)} completed.");

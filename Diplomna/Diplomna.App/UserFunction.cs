@@ -1,7 +1,7 @@
 using Diplomna.Common;
 using Diplomna.Common.Validators;
 using Diplomna.Models.Dtos;
-using Diplomna.Services;
+using Diplomna.Services.Interfaces;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;

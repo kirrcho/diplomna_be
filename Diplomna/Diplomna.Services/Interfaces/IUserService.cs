@@ -1,7 +1,7 @@
 ﻿using Diplomna.Common;
 using Diplomna.Models.Dtos;
 
-namespace Diplomna.Services
+namespace Diplomna.Services.Interfaces
 {
     public interface IUserService
     {

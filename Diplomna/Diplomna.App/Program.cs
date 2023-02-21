@@ -3,6 +3,7 @@ using Diplomna.Common.Constants;
 using Diplomna.Common.Validators;
 using Diplomna.Models;
 using Diplomna.Services;
+using Diplomna.Services.Interfaces;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -34,7 +35,10 @@ namespace Diplomna.App
                     services.AddDbContext<DiplomnaContext>(options =>
                         options.UseSqlServer(configuration.GetValue<string>("DiplomnaContext")));
 
+                    // todo: add log conf
+
                     services.AddScoped<IUserService, UserService>();
+                    services.AddScoped<IBarcodeService, BarcodeService>();
                     services.AddSingleton<IMessageClient, MessageClient>();
                     services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
                 })

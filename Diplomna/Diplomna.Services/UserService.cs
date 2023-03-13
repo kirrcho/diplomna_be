@@ -43,7 +43,7 @@ namespace Diplomna.Services
             {
                 new Claim("fn", request.FacultyNumber),
                 new Claim("email", payload.Email),
-                new Claim("exp", DateTime.Now.AddHours(1).ToString())
+                new Claim("exp", DateTime.UtcNow.AddHours(1).ToString())
             };
 
             var token = Auth.CreateToken(claims, _authConstants.PrivateKey);

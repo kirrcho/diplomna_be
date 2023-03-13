@@ -22,7 +22,7 @@ namespace Diplomna.Services
         public async Task<Result<bool>> LogScanInfo(BarcodeDto input)
         {
             var authResult = Auth.DecodeToken(input.Token, _authConstants.PublicKey);
-            if (authResult is null || DateTime.Parse(authResult.Exp) < DateTime.Now)
+            if (authResult is null || DateTime.Parse(authResult.Exp) < DateTime.UtcNow)
             {
                 return Result<bool>.BadResult("Expired session");
             }

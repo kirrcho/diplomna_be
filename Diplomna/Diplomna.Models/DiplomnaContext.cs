@@ -8,6 +8,8 @@ namespace Diplomna.Models
 
         public DbSet<Attendance> Attendances { get; set; }
 
+        public DbSet<Tutor> Staff { get; set; }
+
         public DiplomnaContext() { }
 
         public DiplomnaContext(DbContextOptions options) : base(options) { }

@@ -24,6 +24,9 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+          
+      - name: setup startup project
+        run: msbuild Diplomna.sln /t:Diplomna_Mobile /p:Configuration="Release" /p:Platform="x86" /p:BuildProjectReferences=false
 
       - name: 'Resolve Project Dependencies Using Dotnet'
         shell: pwsh

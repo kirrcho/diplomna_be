@@ -8,6 +8,9 @@ on:
     branches:
       - main
   workflow_dispatch:
+  
+env:
+  PATH: 'DiplomnaApp'
 
 jobs:
   build:
@@ -22,17 +25,21 @@ jobs:
           dotnet-version: '6.0.x'
           include-prerelease: true
 
-      - name: Build with dotnet
-        run: dotnet build Diplomna.Application --configuration Release
+      - name: 'Resolve Project Dependencies Using Dotnet'
+        shell: pwsh
+        run: |
+          pushd './${{ env.PATH }}'
+          dotnet build Diplomna.Mobile --configuration Release --output ./output
+          popd
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/output
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          path: ${{env.DOTNET_ROOT}}/output
 
   deploy:
     runs-on: windows-latest

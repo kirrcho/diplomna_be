@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Diplomna.Models", "Diplomna
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Diplomna.Common", "Diplomna.Common\Diplomna.Common.csproj", "{C3D1B856-E1B4-4046-B6FA-4BC85D6382FC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diplomna.Auth", "Diplomna.Auth\Diplomna.Auth.csproj", "{2C5D73C4-7F9E-4DB6-B7C5-284328396DA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diplomna.Application", "Diplomna.Application\Diplomna.Application.csproj", "{8EB05FDD-D6BF-42AD-8BAA-F63EB5F72CCD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{C3D1B856-E1B4-4046-B6FA-4BC85D6382FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3D1B856-E1B4-4046-B6FA-4BC85D6382FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3D1B856-E1B4-4046-B6FA-4BC85D6382FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C5D73C4-7F9E-4DB6-B7C5-284328396DA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C5D73C4-7F9E-4DB6-B7C5-284328396DA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C5D73C4-7F9E-4DB6-B7C5-284328396DA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C5D73C4-7F9E-4DB6-B7C5-284328396DA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EB05FDD-D6BF-42AD-8BAA-F63EB5F72CCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EB05FDD-D6BF-42AD-8BAA-F63EB5F72CCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EB05FDD-D6BF-42AD-8BAA-F63EB5F72CCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EB05FDD-D6BF-42AD-8BAA-F63EB5F72CCD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

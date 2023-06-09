@@ -1,4 +1,4 @@
-﻿namespace Diplomna.App.Messaging
+﻿namespace Diplomna.Common.Messaging
 {
     public class AzureBusSettings
     {

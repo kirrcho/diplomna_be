@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Diplomna.App.Messaging
+﻿namespace Diplomna.Common.Messaging
 {
     public interface IMessageClient
     {

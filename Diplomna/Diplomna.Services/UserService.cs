@@ -78,6 +78,11 @@ namespace Diplomna.Services
             return Result<bool>.OkResult(true);
         }
 
+        public async Task<List<User>> GetUsers()
+        {
+            return null;
+        }
+
         private async Task<GoogleJsonWebSignature.Payload?> GetPayloadAsync(string token)
         {
             GoogleJsonWebSignature.Payload payload;

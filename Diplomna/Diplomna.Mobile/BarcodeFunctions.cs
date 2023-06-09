@@ -1,9 +1,9 @@
-﻿using Diplomna.Common.Dtos;
+﻿using System;
+using System.Threading.Tasks;
+using Diplomna.Common.Dtos;
 using Diplomna.Services.Interfaces;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Threading.Tasks;
 
 namespace Diplomna.App
 {
@@ -35,8 +35,6 @@ namespace Diplomna.App
 
                 throw new Exception(result.Error);
             }
-
-
         }
     }
 }

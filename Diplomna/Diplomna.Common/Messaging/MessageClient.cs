@@ -1,8 +1,6 @@
 ﻿using Azure.Messaging.ServiceBus;
-using System;
-using System.Threading.Tasks;
 
-namespace Diplomna.App.Messaging
+namespace Diplomna.Common.Messaging
 {
     public class MessageClient : IMessageClient
     {
@@ -11,8 +9,6 @@ namespace Diplomna.App.Messaging
         public MessageClient(AzureBusSettings settings)
         {
             _client = new ServiceBusClient(settings.ConnectionString);
-
-
         }
 
         public async Task SendMesssageAsync(string message, string queue)

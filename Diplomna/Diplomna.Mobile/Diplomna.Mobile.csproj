@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AzureFunctionsVersion>v4</AzureFunctionsVersion>
+  </PropertyGroup>
+  <ItemGroup>
+	  <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.4.0" />
+	  <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
+	  <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.10.0" />
+	  <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.7.0" />
+	  <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.ServiceBus" Version="5.7.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Diplomna.Services\Diplomna.Services.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="host.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="local.settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+</Project>

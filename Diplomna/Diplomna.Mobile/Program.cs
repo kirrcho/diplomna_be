@@ -1,5 +1,6 @@
-﻿using Diplomna.App.Messaging;
+﻿using System.Threading.Tasks;
 using Diplomna.Common.Constants;
+using Diplomna.Common.Messaging;
 using Diplomna.Common.Validators;
 using Diplomna.Models;
 using Diplomna.Services;
@@ -9,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
 
 namespace Diplomna.App
 {

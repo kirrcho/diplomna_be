@@ -1,8 +1,8 @@
 {
   "profiles": {
-    "Diplomna.App": {
+    "Diplomna.Mobile": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7276",
+      "commandLineArgs": "--port 7068",
       "launchBrowser": false
     }
   }

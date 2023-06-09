@@ -21,12 +21,9 @@ jobs:
         with:
           dotnet-version: '6.0.x'
           include-prerelease: true
-          
-      - name: set startup project
-        run: msbuild Diplomna.sln /t:Diplomna_Application /p:Configuration="Release" /p:Platform="x86" /p:BuildProjectReferences=false
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: dotnet build Diplomna_Application --configuration Release
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp

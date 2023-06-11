@@ -25,16 +25,12 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }} 
       
-      - name: dotnet restore
+      - name: build and publish
         run: |
           cd Diplomna
           dotnet restore
-        
-      - name: build
-        run: dotnet build Diplomna.Application --configuration Release
-        
-      - name: release
-        run: dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
+          dotnet build Diplomna.Application --configuration Release
+          dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
           
       # Deploy to Azure Web apps
       - name: 'Run Azure webapp deploy action using publish profile credentials'

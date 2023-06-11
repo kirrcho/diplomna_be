@@ -17,10 +17,6 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: 'Checkout GitHub Action'
-        uses: actions/checkout@v3.5.3
-          repository: 'main'
-
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:

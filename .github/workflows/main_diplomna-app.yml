@@ -9,36 +9,34 @@ on:
   workflow_dispatch:
   
 env:
-  AZURE_WEBAPP_PACKAGE_PATH: 'Diplomna'      # set this to the path to your web app project, defaults to the repository root
-  DOTNET_VERSION: '6.0.x'           # set this to the dot net version to use
+  AZURE_WEBAPP_NAME: diplomna-app
+  AZURE_WEBAPP_PACKAGE_PATH: 'Diplomna'
+  DOTNET_VERSION: '6.0.x'
 
 jobs:
   build-and-deploy:
     runs-on: windows-latest
-    environment: Production
     steps:
-
-      # Checkout the repo
       - uses: actions/checkout@main
       
-      # Setup .NET Core SDK
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }} 
-
-      - name: dotnet build and publish
-        shell: pwsh
-        run: |
-          pushd './${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
-          dotnet build Diplomna.Application --configuration Release --output ./output
-          popd
+      
+      - name: dotnet restore
+        run: dotnet restore
+        
+      - name: build
+        run: dotnet build --configuration Release
+        
+      -name: release
+        run: dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
           
       # Deploy to Azure Web apps
       - name: 'Run Azure webapp deploy action using publish profile credentials'
         uses: azure/webapps-deploy@v2
         with: 
-          app-name: 'diplomna-app'
-          slot-name: 'Production'
-          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/output'
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_70F04E8C573E4DC184945509DAFACF92  }} # Define secret variable in repository settings as per action documentation

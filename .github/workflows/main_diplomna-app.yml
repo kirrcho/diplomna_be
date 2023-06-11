@@ -2,15 +2,15 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
 name: Build and deploy ASP.Net Core app to Azure Web App - diplomna-app
-  
-env:
-  PATH: 'DiplomnaApp'
 
 on:
   push:
     branches:
       - main
   workflow_dispatch:
+  
+env:
+  PATH: 'DiplomnaApp'
 
 jobs:
   build:
@@ -30,17 +30,27 @@ jobs:
         shell: pwsh
         run: |
           pushd './${{ env.PATH }}'
-          dotnet build Diplomna.Mobile --configuration Release --output ./output
+          dotnet build Diplomna.Application --configuration Release --output ./app
+          popd
+
+      - name: 'Resolve Project Dependencies Using Dotnet'
+        shell: pwsh
+        run: |
+          pushd './${{ env.PATH }}'
+          dotnet build Diplomna.Mobile --configuration Release --output ./mobile
           popd
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/output
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/app
+        
+      - name: dotnet publish
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/mobile
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
-          name: .net-app
-          path: ${{env.DOTNET_ROOT}}/output
+          name: .app
+          path: ${{env.DOTNET_ROOT}}/app
 
   deploy:
     runs-on: windows-latest
@@ -53,7 +63,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
-          name: .net-app
+          name: .app
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -63,3 +73,12 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_70F04E8C573E4DC184945509DAFACF92 }}
           package: .
+          
+      - name: 'Run Azure Functions Action'
+        uses: Azure/functions-action@v1
+        id: fa
+        with:
+          app-name: 'diplomna-BE'
+          slot-name: 'Production'
+          package: '${{ env.PATH }}/mobile'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DFD7DA22CCB64CF8B128A4561E90B559 }}

@@ -6,66 +6,43 @@ name: Build and deploy ASP.Net Core app to Azure Web App - diplomna-app
 on:
   push:
     branches:
-      - main
   workflow_dispatch:
   
 env:
   PATH: 'DiplomnaApp'
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: windows-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3.5.3
-        with:
-          ref: 'main'
-    
-      - name: Set up .NET Core
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@v2
+
+      - name: 'Set up .NET Core'
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '6.0.x'
-          include-prerelease: true
 
       - name: 'Resolve Project Dependencies Using Dotnet'
         shell: pwsh
         run: |
           pushd './${{ env.PATH }}'
-          dotnet build Diplomna.Application --configuration Release --output ./app
-          popd
-
-      - name: 'Resolve Project Dependencies Using Dotnet'
-        shell: pwsh
-        run: |
-          pushd './${{ env.PATH }}'
-          dotnet build Diplomna.Mobile --configuration Release --output ./mobile
+          dotnet build Diplomna.Application --configuration Release --output ./output
           popd
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/app
-        
-      - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/mobile
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/output
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
-          name: .app
-          path: ${{env.DOTNET_ROOT}}/app
+          name: .net-app
+          path: ${{env.DOTNET_ROOT}}/output
 
-  deploy:
-    runs-on: windows-latest
-    needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
-    steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
-          name: .app
+          name: .net-app
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -75,12 +52,3 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_70F04E8C573E4DC184945509DAFACF92 }}
           package: .
-          
-      - name: 'Run Azure Functions Action'
-        uses: Azure/functions-action@v1
-        id: fa
-        with:
-          app-name: 'diplomna-BE'
-          slot-name: 'Production'
-          package: '${{ env.PATH }}/mobile'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DFD7DA22CCB64CF8B128A4561E90B559 }}

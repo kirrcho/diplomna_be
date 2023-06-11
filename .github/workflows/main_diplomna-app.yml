@@ -17,14 +17,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Add a fake 'git' to the PATH to force checkout to download zipball instead
-        shell: cmd
-        run: |
-          echo echo hello > git.bat
-          echo ::add-path::%CD%
-      - uses: actions/checkout@v2
-        with:
-         path: foo
+      - uses: actions/checkout@v3.5.3
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1

@@ -6,6 +6,7 @@ name: Build and deploy ASP.Net Core app to Azure Web App - diplomna-app
 on:
   push:
     branches:
+      main
   workflow_dispatch:
   
 env:
@@ -30,7 +31,7 @@ jobs:
       - name: build
         run: dotnet build --configuration Release
         
-      -name: release
+      - name: release
         run: dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
           
       # Deploy to Azure Web apps

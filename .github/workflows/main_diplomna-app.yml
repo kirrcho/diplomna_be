@@ -26,10 +26,12 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }} 
       
       - name: dotnet restore
-        run: dotnet restore
+        run: |
+          cd Diplomna
+          dotnet restore
         
       - name: build
-        run: dotnet build --configuration Release
+        run: dotnet build Diplomna.Application --configuration Release
         
       - name: release
         run: dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'

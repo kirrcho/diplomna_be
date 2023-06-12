@@ -1,10 +1,15 @@
+using Diplomna.Application.Configuration;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
+
+builder.Services.AddContext(builder.Configuration);
+
+builder.Services.AddCommonClasses();
+
+builder.Services.AddServices();
 
 builder.Services.AddEndpointsApiExplorer(); builder.Services.AddSwaggerGen(option =>
 {

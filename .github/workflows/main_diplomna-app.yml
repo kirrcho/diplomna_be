@@ -12,6 +12,7 @@ on:
 env:
   AZURE_WEBAPP_NAME: diplomna-app
   AZURE_WEBAPP_PACKAGE_PATH: 'Diplomna'
+  STAGING_DIRECTORY: 'stagingDirectory'
   DOTNET_VERSION: '6.0.x'
 
 jobs:
@@ -32,10 +33,20 @@ jobs:
           dotnet build Diplomna.Application --configuration Release
           dotnet publish Diplomna.Application -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
           
-      # Deploy to Azure Web apps
+      
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          path: 'Diplomna/${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
+          
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v2.1.1
+        with:
+          path: '${{env.STAGING_DIRECTORY}}'
+      
       - name: 'Run Azure webapp deploy action using publish profile credentials'
         uses: azure/webapps-deploy@v2
         with: 
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          package: 'Diplomna/${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
+          package: '${{env.STAGING_DIRECTORY}}'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_70F04E8C573E4DC184945509DAFACF92  }} # Define secret variable in repository settings as per action documentation

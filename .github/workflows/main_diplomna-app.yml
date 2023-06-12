@@ -48,5 +48,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with: 
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          package: '${{env.STAGING_DIRECTORY}}'
+          package: '${{env.STAGING_DIRECTORY}}/artifact'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_70F04E8C573E4DC184945509DAFACF92  }} # Define secret variable in repository settings as per action documentation

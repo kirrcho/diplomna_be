@@ -1,12 +1,12 @@
-﻿using Diplomna.Common;
+﻿using System.Security.Claims;
+using Diplomna.Common;
 using Diplomna.Common.Auth;
 using Diplomna.Common.Constants;
+using Diplomna.Common.Dtos;
 using Diplomna.Models;
-using Diplomna.Models.Dtos;
 using Diplomna.Services.Interfaces;
 using Google.Apis.Auth;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 
 namespace Diplomna.Services
 {
@@ -21,7 +21,7 @@ namespace Diplomna.Services
             _authConstants = authConstants;
         }
 
-        public async Task<Result<string>> LoginAsync(LoginRequest request)
+        public async Task<Result<string>> LoginMobileAsync(LoginMobileRequest request)
         {
             var payload = await GetPayloadAsync(request.Token);
             if (payload == null)
@@ -51,7 +51,7 @@ namespace Diplomna.Services
             return Result<string>.OkResult(token);
         }
 
-        public async Task<Result<bool>> RegisterAsync(LoginRequest request)
+        public async Task<Result<bool>> RegisterMobileAsync(LoginMobileRequest request)
         {
             var payload = await GetPayloadAsync(request.Token);
             if (payload == null)
@@ -78,9 +78,60 @@ namespace Diplomna.Services
             return Result<bool>.OkResult(true);
         }
 
-        public async Task<List<User>> GetUsers()
+        public async Task<Result<string>> LoginAsync(string payloadToken)
         {
-            return null;
+            var payload = await GetPayloadAsync(payloadToken);
+            if (payload == null)
+            {
+                return Result<string>.BadResult("Invalid request. Contact administration for assistance");
+            }
+
+            var tutor = await _context.Staff.FirstOrDefaultAsync(p => p.Email == payload.Email);
+            if (tutor == null)
+            {
+                return Result<string>.BadResult("Invalid request.");
+            }
+            if (!tutor.IsConfirmed)
+            {
+                return Result<string>.BadResult("This account is not yet confirmed as valid.");
+            }
+
+            var claims = new List<Claim>
+            {
+                new Claim("id", tutor.Id.ToString()),
+                new Claim("email", payload.Email),
+                new Claim("exp", DateTime.UtcNow.AddHours(1).ToString())
+            };
+
+            var token = Auth.CreateToken(claims, _authConstants.PrivateKey);
+
+            return Result<string>.OkResult(token);
+        }
+
+        public async Task<Result<bool>> RegisterAsync(string payloadToken)
+        {
+            var payload = await GetPayloadAsync(payloadToken);
+            if (payload == null)
+            {
+                return Result<bool>.BadResult("Invalid request. Contact administration for assistance");
+            }
+
+            var user = await _context.Staff.FirstOrDefaultAsync(p => payload.Email == p.Email);
+            if (user != null)
+            {
+                return Result<bool>.BadResult("User already exists.");
+            }
+
+            var newUser = new Tutor()
+            {
+                Email = payload.Email,
+                IsConfirmed = false,
+            };
+
+            await _context.Staff.AddAsync(newUser);
+            await _context.SaveChangesAsync();
+
+            return Result<bool>.OkResult(true);
         }
 
         private async Task<GoogleJsonWebSignature.Payload?> GetPayloadAsync(string token)

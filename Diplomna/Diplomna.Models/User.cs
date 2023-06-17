@@ -10,6 +10,8 @@
 
         public bool IsConfirmed { get; set; }
 
+        public List<Attendance> Attendances { get; set; }
+
         public DateTime? LastLogin { get; set; }
     }
 }

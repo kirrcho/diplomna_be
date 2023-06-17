@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Security.Claims;
+using System.Security.Cryptography;
+using Newtonsoft.Json;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.OpenSsl;
 using Org.BouncyCastle.Security;
-using System.Security.Claims;
-using System.Security.Cryptography;
 
 namespace Diplomna.Common.Auth
 {
@@ -43,7 +43,15 @@ namespace Diplomna.Common.Auth
             using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
             {
                 rsa.ImportParameters(rsaParams);
-                return JsonConvert.DeserializeObject<AuthDecodeResult>(Jose.JWT.Decode(token, rsa, Jose.JwsAlgorithm.RS256));
+                try
+                {
+                    var decipheredToken = JsonConvert.DeserializeObject<AuthDecodeResult>(Jose.JWT.Decode(token, rsa, Jose.JwsAlgorithm.RS256));
+                    return decipheredToken;
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
             }
         }
     }

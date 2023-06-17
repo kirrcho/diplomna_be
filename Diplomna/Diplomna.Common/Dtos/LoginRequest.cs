@@ -1,6 +1,6 @@
 ﻿namespace Diplomna.Common.Dtos
 {
-    public class BaseDto
+    public class LoginRequest
     {
         public string Token { get; set; }
     }

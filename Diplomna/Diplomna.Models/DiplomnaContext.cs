@@ -8,6 +8,8 @@ namespace Diplomna.Models
 
         public DbSet<Attendance> Attendances { get; set; }
 
+        public DbSet<Room> Rooms { get; set; }
+
         public DbSet<Tutor> Staff { get; set; }
 
         public DiplomnaContext() { }
@@ -16,8 +18,6 @@ namespace Diplomna.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            // manually add options on executing update-database due to bugged .net version
-            
             base.OnConfiguring(options);
         }
     }

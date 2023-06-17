@@ -1,6 +1,6 @@
-﻿namespace Diplomna.Models.Dtos
+﻿namespace Diplomna.Common.Dtos
 {
-    public class LoginRequest
+    public class LoginMobileRequest
     {
         public string Token { get; set; }
 

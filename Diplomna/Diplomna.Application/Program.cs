@@ -1,59 +1,36 @@
 using Diplomna.Application.Configuration;
-using Microsoft.OpenApi.Models;
+using Diplomna.Application.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var config = builder.Configuration;
+
 builder.Services.AddControllers();
 
-builder.Services.AddContext(builder.Configuration);
+builder.Services.AddContext(config);
 
-builder.Services.AddCommonClasses();
+builder.Services.AddCommonClasses(config);
 
 builder.Services.AddServices();
 
-builder.Services.AddEndpointsApiExplorer(); builder.Services.AddSwaggerGen(option =>
-{
-    option.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
-    option.IgnoreObsoleteActions();
-    option.IgnoreObsoleteProperties();
-    option.CustomSchemaIds(type => type.FullName);
-    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Diplomna", Version = "v1" });
-    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        In = ParameterLocation.Header,
-        Description = "Please enter a valid token",
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        BearerFormat = "JWT",
-        Scheme = "Bearer"
-    });
-    option.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type=ReferenceType.SecurityScheme,
-                    Id="Bearer"
-                }
-            },
-            new string[]{}
-        }
-    });
-});
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwagger();
 
 var app = builder.Build();
 
 app.UseSwagger();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwaggerUI();
+
+    app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<AuthenticationMiddleware>();
 
 app.UseAuthorization();
 

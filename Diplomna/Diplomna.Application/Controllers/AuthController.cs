@@ -1,6 +1,6 @@
 using Diplomna.Common;
+using Diplomna.Common.Dtos;
 using Diplomna.Common.Validators;
-using Diplomna.Models.Dtos;
 using Diplomna.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,9 +22,9 @@ namespace Diplomna.Application.Controllers
         }
 
         [HttpPost("LoginMob")]
-        public async Task<Result<string>> LoginMobAsync(LoginRequest request)
+        public async Task<Result<string>> LoginMobAsync([FromBody] LoginMobileRequest request)
         {
-            _logger.LogInformation($"{nameof(LoginAsync)} triggered.");
+            _logger.LogInformation($"{nameof(LoginMobAsync)} triggered.");
 
             var validationResult = _loginRequestValidator.Validate(request);
             if (!validationResult.IsValid)
@@ -34,21 +34,21 @@ namespace Diplomna.Application.Controllers
                 return Result<string>.BadResult(error);
             }
 
-            var result = await _userService.LoginAsync(request);
+            var result = await _userService.LoginMobileAsync(request);
             if (!result.IsSuccessful)
             {
                 _logger.LogError(result.Error);
                 return Result<string>.BadResult(result.Error);
             }
 
-            _logger.LogInformation($"{nameof(LoginAsync)} completed.");
+            _logger.LogInformation($"{nameof(LoginMobAsync)} completed.");
             return result;
         }
 
         [HttpPost("RegisterMob")]
-        public async Task<Result<bool>> RegisterMobAsync(LoginRequest request)
+        public async Task<Result<bool>> RegisterMobAsync([FromBody] LoginMobileRequest request)
         {
-            _logger.LogInformation($"{nameof(RegisterAsync)} triggered.");
+            _logger.LogInformation($"{nameof(RegisterMobAsync)} triggered.");
 
             var validationResult = _loginRequestValidator.Validate(request);
             if (!validationResult.IsValid)
@@ -58,14 +58,14 @@ namespace Diplomna.Application.Controllers
                 return Result<bool>.BadResult(error);
             }
 
-            var result = await _userService.RegisterAsync(request);
+            var result = await _userService.RegisterMobileAsync(request);
             if (!result.IsSuccessful)
             {
                 _logger.LogError(result.Error);
                 return Result<bool>.BadResult(result.Error);
             }
 
-            _logger.LogInformation($"{nameof(RegisterAsync)} completed.");
+            _logger.LogInformation($"{nameof(RegisterMobAsync)} completed.");
             return result;
         }
 
@@ -74,15 +74,7 @@ namespace Diplomna.Application.Controllers
         {
             _logger.LogInformation($"{nameof(LoginAsync)} triggered.");
 
-            var validationResult = _loginRequestValidator.Validate(request);
-            if (!validationResult.IsValid)
-            {
-                var error = string.Join("", validationResult.Errors);
-                _logger.LogError(error);
-                return Result<string>.BadResult(error);
-            }
-
-            var result = await _userService.LoginAsync(request);
+            var result = await _userService.LoginAsync(request.Token);
             if (!result.IsSuccessful)
             {
                 _logger.LogError(result.Error);
@@ -98,15 +90,7 @@ namespace Diplomna.Application.Controllers
         {
             _logger.LogInformation($"{nameof(RegisterAsync)} triggered.");
 
-            var validationResult = _loginRequestValidator.Validate(request);
-            if (!validationResult.IsValid)
-            {
-                var error = string.Join("", validationResult.Errors);
-                _logger.LogError(error);
-                return Result<bool>.BadResult(error);
-            }
-
-            var result = await _userService.RegisterAsync(request);
+            var result = await _userService.RegisterAsync(request.Token);
             if (!result.IsSuccessful)
             {
                 _logger.LogError(result.Error);

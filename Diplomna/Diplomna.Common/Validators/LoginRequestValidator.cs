@@ -1,9 +1,9 @@
-﻿using Diplomna.Models.Dtos;
+﻿using Diplomna.Common.Dtos;
 using FluentValidation;
 
 namespace Diplomna.Common.Validators
 {
-    public class LoginRequestValidator : AbstractValidator<LoginRequest>
+    public class LoginRequestValidator : AbstractValidator<LoginMobileRequest>
     {
         public LoginRequestValidator()
         {

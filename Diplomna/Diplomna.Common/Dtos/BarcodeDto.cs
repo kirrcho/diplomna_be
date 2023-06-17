@@ -1,7 +1,9 @@
 ﻿namespace Diplomna.Common.Dtos
 {
-    public class BarcodeDto : BaseDto
+    public class BarcodeDto
     {
-        public string scanInfo { get; set; }
+        public string ScanInfo { get; set; }
+
+        public string Token { get; set; }
     }
 }

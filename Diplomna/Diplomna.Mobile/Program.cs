@@ -35,9 +35,6 @@ namespace Diplomna.App
                     services.AddDbContext<DiplomnaContext>(options =>
                         options.UseSqlServer(configuration.GetValue<string>("DiplomnaContext")));
 
-                    // todo: add log conf
-
-                    services.AddScoped<IUserService, UserService>();
                     services.AddScoped<IBarcodeService, BarcodeService>();
                     services.AddSingleton<IMessageClient, MessageClient>();
                     services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();

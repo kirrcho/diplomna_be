@@ -4,8 +4,10 @@
     {
         public string Email { get; set; }
 
-        public string Fn { get; set; }
+        public string? Fn { get; set; }
 
         public string Exp { get; set; }
+
+        public int? Id { get; set; }
     }
 }

@@ -18,7 +18,7 @@ namespace Diplomna.Services
         public async Task<Result<bool>> AddAttendanceAsync(AddAttendanceDto dto, int tutorId)
         {
             var user = await _context.Users.FirstOrDefaultAsync(p => p.FacultyNumber == dto.FacultyNumber);
-            if (user is null)
+            if (user is null && user.IsConfirmed == false)
             {
                 return Result<bool>.BadResult("Invalid faculty number");
             }

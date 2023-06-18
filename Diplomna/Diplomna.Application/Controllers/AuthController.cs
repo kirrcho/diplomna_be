@@ -12,13 +12,18 @@ namespace Diplomna.Application.Controllers
     {
         private readonly ILogger<AuthController> _logger;
         private readonly LoginRequestValidator _loginRequestValidator;
+        private readonly RegisterMobileRequestValidator _registerMobileRequestValidator;
         private readonly IUserService _userService;
 
-        public AuthController(ILogger<AuthController> log, IUserService userService, LoginRequestValidator loginRequestValidator)
+        public AuthController(ILogger<AuthController> log,
+            IUserService userService,
+            LoginRequestValidator loginRequestValidator,
+            RegisterMobileRequestValidator registerMobileRequestValidator)
         {
             _logger = log;
             _userService = userService;
             _loginRequestValidator = loginRequestValidator;
+            _registerMobileRequestValidator = registerMobileRequestValidator;
         }
 
         [HttpPost("LoginMob")]
@@ -46,11 +51,11 @@ namespace Diplomna.Application.Controllers
         }
 
         [HttpPost("RegisterMob")]
-        public async Task<Result<bool>> RegisterMobAsync([FromBody] LoginMobileRequest request)
+        public async Task<Result<bool>> RegisterMobAsync([FromBody] RegisterMobileRequest request)
         {
             _logger.LogInformation($"{nameof(RegisterMobAsync)} triggered.");
 
-            var validationResult = _loginRequestValidator.Validate(request);
+            var validationResult = _registerMobileRequestValidator.Validate(request);
             if (!validationResult.IsValid)
             {
                 var error = string.Join("", validationResult.Errors);

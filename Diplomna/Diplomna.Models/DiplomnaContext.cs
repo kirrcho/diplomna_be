@@ -12,6 +12,8 @@ namespace Diplomna.Models
 
         public DbSet<Tutor> Staff { get; set; }
 
+        public DbSet<Group> Groups { get; set; }
+
         public DiplomnaContext() { }
 
         public DiplomnaContext(DbContextOptions options) : base(options) { }

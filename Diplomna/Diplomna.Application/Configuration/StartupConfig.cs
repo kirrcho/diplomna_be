@@ -16,6 +16,7 @@ namespace Diplomna.Application.Configuration
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRoomsService, RoomsService>();
             services.AddScoped<IAttendanceService, AttendanceService>();
+            services.AddScoped<IGroupsService, GroupsService>();
         }
 
         public static void AddContext(this IServiceCollection services, IConfiguration configuration)

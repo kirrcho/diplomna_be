@@ -51,7 +51,7 @@ namespace Diplomna.Services
             return Result<string>.OkResult(token);
         }
 
-        public async Task<Result<bool>> RegisterMobileAsync(LoginMobileRequest request)
+        public async Task<Result<bool>> RegisterMobileAsync(RegisterMobileRequest request)
         {
             var payload = await GetPayloadAsync(request.Token);
             if (payload == null)
@@ -65,10 +65,19 @@ namespace Diplomna.Services
                 return Result<bool>.BadResult("User already exists.");
             }
 
+            var group = await _context.Groups.FirstOrDefaultAsync(p => p.GroupNumber == request.Group);
+            if (group is null)
+            {
+                return Result<bool>.BadResult("Invalid group.");
+            }
+
             var newUser = new User()
             {
                 Email = payload.Email,
                 FacultyNumber = request.FacultyNumber,
+                GroupId = group.Id,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
                 IsConfirmed = false,
             };
 

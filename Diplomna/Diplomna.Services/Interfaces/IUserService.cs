@@ -7,7 +7,7 @@ namespace Diplomna.Services.Interfaces
     {
         public Task<Result<string>> LoginMobileAsync(LoginMobileRequest request);
 
-        public Task<Result<bool>> RegisterMobileAsync(LoginMobileRequest request);
+        public Task<Result<bool>> RegisterMobileAsync(RegisterMobileRequest request);
 
         public Task<Result<string>> LoginAsync(string token);
 

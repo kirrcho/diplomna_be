@@ -60,6 +60,7 @@ namespace Diplomna.Services
                     .Select(p => new AttendanceRoomDto()
                     {
                         AttendanceId = p.Id,
+                        FullName = p.User.FirstName + " " + p.User.LastName,
                         FacultyNumber = p.User.FacultyNumber,
                         PresenceConfirmed = p.PresenceConfirmed,
                         PresenceConfirmedTime = p.PresenceConfirmedTime != null ? p.PresenceConfirmedTime.Value.ToString("yyyy-MM-dd/HH:mm:ss") : string.Empty,

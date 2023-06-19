@@ -8,6 +8,8 @@
 
         public string FacultyNumber { get; set; }
 
+        public string FullName { get; set; }
+
         public string TimeScanned { get; set; }
 
         public bool PresenceConfirmed { get; set; }

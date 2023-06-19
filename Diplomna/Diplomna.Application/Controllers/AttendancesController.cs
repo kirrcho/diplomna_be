@@ -36,13 +36,5 @@ namespace Diplomna.Application.Controllers
 
             return await _attendanceService.AddAttendanceAsync(dto, int.Parse(tutorId.ToString() ?? string.Empty));
         }
-
-        [HttpGet("/attendances/{userId}")]
-        public async Task<Result<UserAttendanceDto>> GetUserAttendances(DateTime day, int userId)
-        {
-            _logger.LogInformation($"{nameof(GetUserAttendances)} triggered.");
-
-            return await _attendanceService.GetUserAttendancesAsync(day, userId);
-        }
     }
 }

@@ -143,6 +143,78 @@ namespace Diplomna.Services
             return Result<bool>.OkResult(true);
         }
 
+        public async Task<Result<bool>> ConfirmUserAccount(int userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(p => userId == p.Id);
+            if (user is null)
+            {
+                return Result<bool>.BadResult("Invalid user id.");
+            }
+            else if (user.IsConfirmed)
+            {
+                return Result<bool>.BadResult("Account is already confirmed.");
+            }
+
+            user.IsConfirmed = true;
+
+            await _context.SaveChangesAsync();
+            return Result<bool>.OkResult(true);
+        }
+
+        public async Task<Result<UserAttendanceDto>> GetUserAttendancesAsync(DateTime day, int userId)
+        {
+            var user = await _context.Users
+                .Include(p => p.Group)
+                .FirstOrDefaultAsync(p => p.Id == userId);
+
+            if (user is null)
+            {
+                return Result<UserAttendanceDto>.BadResult("Invalid user id");
+            }
+
+            var attendances = await _context.Attendances
+                .Include(p => p.Tutor)
+                .Include(p => p.Room)
+                .Where(p => day.Date == p.TimeScanned.Date && p.UserId == userId)
+                .Select(p => new AttendanceDto()
+                {
+                    AttendanceId = p.Id,
+                    RoomId = p.RoomId,
+                    RoomNumber = p.Room.RoomNumber,
+                    PresenceConfirmed = p.PresenceConfirmed,
+                    PresenceConfirmedTime = p.PresenceConfirmedTime != null ? p.PresenceConfirmedTime.Value.ToString("yyyy-MM-dd/HH:mm:ss") : string.Empty,
+                    TimeScanned = p.TimeScanned.ToString("yyyy-MM-dd/HH:mm:ss"),
+                    TutorEmail = p.Tutor != null ? p.Tutor.Email : null,
+                    TutorId = p.TutorId
+
+                })
+                .ToListAsync();
+
+            return Result<UserAttendanceDto>.OkResult(new UserAttendanceDto()
+            {
+                FacultyNumber = user.FacultyNumber,
+                FirstName = user.FirstName,
+                GroupId = user.GroupId,
+                GroupNumber = user.Group.GroupNumber,
+                Year = user.Group.StartYear,
+                LastName = user.LastName,
+                Attendances = attendances
+            });
+        }
+
+        public async Task<IEnumerable<UnconfirmedUserDto>> GetUnconfirmedUsers()
+            => await _context.Users
+                .Where(u => u.IsConfirmed == false)
+                .Select(p => new UnconfirmedUserDto()
+                {
+                    Id = p.Id,
+                    FacultyNumber = p.FacultyNumber,
+                    FirstName = p.FirstName,
+                    LastName = p.LastName,
+                    Email = p.Email,
+                })
+                .ToListAsync();
+
         private async Task<GoogleJsonWebSignature.Payload?> GetPayloadAsync(string token)
         {
             GoogleJsonWebSignature.Payload payload;
@@ -156,6 +228,37 @@ namespace Diplomna.Services
             }
 
             return payload;
+        }
+
+        public async Task<Result<bool>> RemoveUserAccount(int userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(p => p.Id == userId);
+            if (user == null)
+            {
+                return Result<bool>.BadResult("Invalid user id");
+            }
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+
+            return Result<bool>.OkResult(true);
+        }
+
+        public async Task<IEnumerable<UserDto>> FindUsersBySearchPhrase(string searchPhrase)
+        {
+            var users = await _context.Users
+                .Where(p => p.IsConfirmed == true && (p.FirstName + " " + p.LastName).Contains(searchPhrase))
+                .Take(10)
+                .Select(p => new UserDto()
+                {
+                    Id = p.Id,
+                    FirstName = p.FirstName,
+                    LastName = p.LastName,
+                    FacultyNumber = p.FacultyNumber,
+                })
+                .ToListAsync();
+
+            return users;
         }
     }
 }

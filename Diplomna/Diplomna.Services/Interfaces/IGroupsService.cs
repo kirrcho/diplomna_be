@@ -8,5 +8,7 @@ namespace Diplomna.Services.Interfaces
         Task<Result<GroupDetailsDto>> GetGroupsAsync(int page, int pageSize);
 
         Task<Result<GroupUserDto>> GetGroupDetailsAsync(int startYear, int groupId);
+
+        Task<Result<bool>> UpdateGroups();
     }
 }

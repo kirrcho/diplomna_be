@@ -64,5 +64,26 @@ namespace Diplomna.Services
                 Students = studentsInGroup
             });
         }
+
+        public async Task<Result<bool>> UpdateGroups()
+        {
+            var yearToCreate = DateTime.UtcNow.Year;
+            if (_context.Groups.Any(p => p.StartYear == yearToCreate))
+            {
+                return Result<bool>.BadResult("Invalid trigger date");
+            }
+
+            var groups = await _context.Groups.Where(p => p.StartYear == yearToCreate - 1).ToListAsync();
+            var groupsToCreate = groups.Select(p => new Group()
+            {
+                GroupNumber = p.GroupNumber,
+                StartYear = yearToCreate,
+            });
+
+            await _context.Groups.AddRangeAsync(groupsToCreate);
+            await _context.SaveChangesAsync();
+
+            return Result<bool>.OkResult(true);
+        }
     }
 }

@@ -65,7 +65,7 @@ namespace Diplomna.Services
                 return Result<bool>.BadResult("User already exists.");
             }
 
-            var group = await _context.Groups.FirstOrDefaultAsync(p => p.GroupNumber == request.Group);
+            var group = await _context.Groups.FirstOrDefaultAsync(p => p.GroupNumber == request.Group && p.StartYear == DateTime.UtcNow.Year);
             if (group is null)
             {
                 return Result<bool>.BadResult("Invalid group.");

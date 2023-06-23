@@ -16,6 +16,8 @@
 
         public Group Group { get; set; }
 
+        public int StartYear { get; set; }
+
         public bool IsConfirmed { get; set; }
 
         public List<Attendance> Attendances { get; set; }

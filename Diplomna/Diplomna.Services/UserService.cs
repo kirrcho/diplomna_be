@@ -65,7 +65,7 @@ namespace Diplomna.Services
                 return Result<bool>.BadResult("User already exists.");
             }
 
-            var group = await _context.Groups.FirstOrDefaultAsync(p => p.GroupNumber == request.Group && p.StartYear == DateTime.UtcNow.Year);
+            var group = await _context.Groups.FirstOrDefaultAsync(p => p.GroupNumber == request.Group);
             if (group is null)
             {
                 return Result<bool>.BadResult("Invalid group.");
@@ -78,6 +78,7 @@ namespace Diplomna.Services
                 GroupId = group.Id,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
+                StartYear = DateTime.UtcNow.Year,
                 IsConfirmed = false,
             };
 
@@ -196,7 +197,7 @@ namespace Diplomna.Services
                 FirstName = user.FirstName,
                 GroupId = user.GroupId,
                 GroupNumber = user.Group.GroupNumber,
-                Year = user.Group.StartYear,
+                Year = user.StartYear,
                 LastName = user.LastName,
                 Attendances = attendances
             });

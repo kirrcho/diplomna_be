@@ -46,7 +46,6 @@ namespace Diplomna.Services
             }
 
             var studentsInGroup = await _context.Users
-                .Include(p => p.Group)
                 .Where(p => p.StartYear == startYear && p.GroupId == groupId && p.IsConfirmed == true)
                 .Select(p => new UserDto()
                 {

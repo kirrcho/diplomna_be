@@ -1,6 +1,5 @@
 ﻿using Diplomna.Common;
 using Diplomna.Common.Auth;
-using Diplomna.Common.Constants;
 using Diplomna.Common.Dtos;
 using Diplomna.Models;
 using Diplomna.Services.Interfaces;

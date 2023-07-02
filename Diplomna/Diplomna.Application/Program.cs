@@ -17,6 +17,11 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwagger();
 
+builder.Services.AddAntiforgery(options =>
+{
+    options.SuppressXFrameOptionsHeader = true;
+});
+
 var app = builder.Build();
 
 app.UseSwagger();
@@ -24,13 +29,24 @@ app.UseSwagger();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwaggerUI();
-
-    app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 }
+
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Add("X-Xss-Protection", "1; mode=block");
+    context.Response.Headers.Add("Referrer-Policy", "no-referrer");
+    context.Response.Headers.Add("X-Permitted-Cross-Domain-Policies", "none");
+    context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+    context.Response.Headers.Add("Permissions-Policy", "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()");
+    context.Response.Headers.Add("Content-Security-Policy", "default-src 'self'");
+    await next();
+});
 
 app.UseHttpsRedirection();
 
 app.UseMiddleware<AuthenticationMiddleware>();
+
+app.UseHsts();
 
 app.UseAuthorization();
 

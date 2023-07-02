@@ -1,4 +1,4 @@
-﻿namespace Diplomna.Common.Constants
+﻿namespace Diplomna.Common.Auth
 {
     public class AuthConstants
     {

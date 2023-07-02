@@ -1,4 +1,4 @@
-﻿using Diplomna.Common.Constants;
+﻿using Diplomna.Common.Auth;
 using Diplomna.Common.Validators;
 using Diplomna.Models;
 using Diplomna.Services;

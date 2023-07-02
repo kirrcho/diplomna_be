@@ -1,5 +1,4 @@
 ﻿using Diplomna.Common.Auth;
-using Diplomna.Common.Constants;
 
 namespace Diplomna.Application.Middlewares
 {
